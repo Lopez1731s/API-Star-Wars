@@ -204,30 +204,30 @@ function displayMoviesBySearch(resDataMoviesSearch){
             </div>
         `
     }
+    else{
+        for (let i = 0; i < resDataMoviesSearch.results.length; i++) {
+            const item = resDataMoviesSearch.results[i];
+
+            const title = item.title;
+            const director = item.director;
+            const release = item.release_date;
 
 
-    for (let i = 0; i < resDataMoviesSearch.results.length; i++) {
-        const item = resDataMoviesSearch.results[i];
+            cardContainer.innerHTML += `
+                <div class="col-3">
+                    <div class="card mb-4 shadow p-3 mb-5 bg-white rounded" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="getMoviesbyName('${title}')">
+                        <img src="images/${title}.jpg" class="image-card" alt="${title} image">
+                        <div class="card-body">
+                            <h5>${title}</h5>
+                            <p class="card-text">Director: ${director}</p>
 
-        const title = item.title;
-        const director = item.director;
-        const release = item.release_date;
-
-
-        cardContainer.innerHTML += `
-            <div class="col-3">
-                <div class="card mb-4 shadow p-3 mb-5 bg-white rounded" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="getMoviesbyName('${title}')">
-                    <img src="images/${title}.jpg" class="image-card" alt="${title} image">
-                    <div class="card-body">
-                        <h5>${title}</h5>
-                        <p class="card-text">Director: ${director}</p>
-
-                        <a class="btn btn-secondary">Read more</a></br></br>
-                        
-                        <p class="card-text"><small class="text-muted">Release: ${release}</small></p>
+                            <a class="btn btn-secondary">Read more</a></br></br>
+                            
+                            <p class="card-text"><small class="text-muted">Release: ${release}</small></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `
+            `
+        }
     }
 }
