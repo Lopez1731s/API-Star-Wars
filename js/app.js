@@ -12,12 +12,12 @@ const cardContainerStarships = document.querySelector("#card-container-starships
 const cardContainerPlanets = document.querySelector("#card-container-planets");
 
 const form = document.querySelector("#formulario");
-const movieName = document.querySelector("#movie-name");
+const movieNameInput = document.querySelector("#movie-name");
 
-form.addEventListener('submit', function name(param) {
-    var name = movieName.value;
+form.addEventListener('submit', ()=> {
+    var name = movieNameInput.value;
 
-    console.log(name)
+    getMoviesSearch(name);
 });
 
 
@@ -61,6 +61,12 @@ async function getPlanets(URL_PLANETS) {
     displayPlanets(resDataStarships);
 }
 
+async function getMoviesSearch(name) {
+    const res = await fetch(API_URL_SEARCH + name);
+    const resDataMoviesSearch = await res.json();
+
+    displayMoviesBySearch(resDataMoviesSearch);
+}
 
 function displayMovies(resData){
     for (let i = 0; i < resData.results.length; i++) {
@@ -76,7 +82,7 @@ function displayMovies(resData){
         cardContainer.innerHTML += `
             <div class="col-3">
                 <div class="card mb-4 shadow p-3 mb-5 bg-white rounded" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="getMoviesbyName('${title}')">
-                    <img src="../images/${title}.jpg" class="image-card" alt="${title} image">
+                    <img src="images/${title}.jpg" class="image-card" alt="${title} image">
                     <div class="card-body">
                         <h5>${title}</h5>
                         <p class="card-text">Director: ${director}</p>
@@ -138,7 +144,7 @@ function displayMoviesByName(resDataMovies){
         
             <div class="row">
                 <div class="col-6">
-                    <img src="../images/${title}.jpg" class="image-modal" alt="${title} image">
+                    <img src="images/${title}.jpg" class="image-modal" alt="${title} image">
                 </div>
         
                 <div class="col-6">
@@ -182,4 +188,46 @@ function displayPlanets(resDataStarships) {
     cardContainerPlanets.innerHTML += `
     <p>${planetNames}</p>
 `
+}
+
+function displayMoviesBySearch(resDataMoviesSearch){
+    cardContainer.innerHTML="";
+    movieNameInput.value="";
+
+    const validacion = resDataMoviesSearch.count;
+
+        
+    if (validacion === 0) {
+        cardContainer.innerHTML+= `
+            <div class="alert alert-dark" role="alert">
+                Movie is not register over the API <a href="index.html" class="alert-link">go home</a>. And continue searching.
+            </div>
+        `
+    }
+
+
+    for (let i = 0; i < resDataMoviesSearch.results.length; i++) {
+        const item = resDataMoviesSearch.results[i];
+
+        const title = item.title;
+        const director = item.director;
+        const release = item.release_date;
+
+
+        cardContainer.innerHTML += `
+            <div class="col-3">
+                <div class="card mb-4 shadow p-3 mb-5 bg-white rounded" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="getMoviesbyName('${title}')">
+                    <img src="images/${title}.jpg" class="image-card" alt="${title} image">
+                    <div class="card-body">
+                        <h5>${title}</h5>
+                        <p class="card-text">Director: ${director}</p>
+
+                        <a class="btn btn-secondary">Read more</a></br></br>
+                        
+                        <p class="card-text"><small class="text-muted">Release: ${release}</small></p>
+                    </div>
+                </div>
+            </div>
+        `
+    }
 }
