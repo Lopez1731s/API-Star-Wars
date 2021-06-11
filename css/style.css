@@ -1,0 +1,15 @@
+.image-card{
+    height: 390px;
+    width: 250px;
+    margin: auto;
+    padding-top: 5px;
+}
+
+.image-modal{
+    position: relative;
+    height: 390px;
+    width: 250px;
+    margin: auto;
+    align-items: center;
+    display: flex;
+}
